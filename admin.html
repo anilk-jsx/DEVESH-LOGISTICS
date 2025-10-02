@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Devesh Logistics</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+        }
+        
+        .admin-header {
+            background: #f44336;
+            color: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f44336;
+        }
+        
+        .tab-btn {
+            background: #fff;
+            border: none;
+            padding: 15px 30px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: bold;
+        }
+        
+        .tab-btn.active {
+            border-bottom-color: #f44336;
+            color: #f44336;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .data-table th,
+        .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .data-table th {
+            background: #f44336;
+            color: white;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .status-pending { background: #ff9800; }
+        .status-confirmed { background: #4caf50; }
+        .status-in_progress { background: #2196f3; }
+        .status-completed { background: #8bc34a; }
+        .status-cancelled { background: #f44336; }
+        .status-new { background: #ff9800; }
+        .status-read { background: #2196f3; }
+        .status-replied { background: #4caf50; }
+        
+        .action-btn {
+            padding: 5px 10px;
+            margin: 2px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            color: white;
+        }
+        
+        .btn-update { background: #2196f3; }
+        .btn-delete { background: #f44336; }
+        .btn-view { background: #4caf50; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 5px solid #f44336;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #f44336;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <h1>Devesh Logistics - Admin Panel</h1>
+        <p>Manage Bookings and Contact Messages</p>
+    </div>
+
+    <div class="admin-container">
+        <!-- Statistics Dashboard -->
+        <div class="stats-grid" id="statsGrid">
+            <!-- Stats will be loaded here -->
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="showTab('bookings')">Bookings</button>
+            <button class="tab-btn" onclick="showTab('messages')">Contact Messages</button>
+        </div>
+
+        <!-- Bookings Tab -->
+        <div id="bookings" class="tab-content active">
+            <h2>Booking Management</h2>
+            <input type="text" class="search-box" placeholder="Search bookings..." id="bookingSearch" onkeyup="searchTable('bookingsTable', this.value)">
+            <div id="bookingsTable">
+                <!-- Bookings table will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Messages Tab -->
+        <div id="messages" class="tab-content">
+            <h2>Contact Messages</h2>
+            <input type="text" class="search-box" placeholder="Search messages..." id="messageSearch" onkeyup="searchTable('messagesTable', this.value)">
+            <div id="messagesTable">
+                <!-- Messages table will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            loadBookings();
+            loadMessages();
+        });
+
+        // Tab switching function
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Load statistics
+        function loadStats() {
+            fetch('admin-api.php?action=stats')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const statsHtml = `
+                            <div class="stat-card">
+                                <div class="stat-number">${data.stats.total_bookings}</div>
+                                <div>Total Bookings</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">${data.stats.pending_bookings}</div>
+                                <div>Pending Bookings</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">${data.stats.total_messages}</div>
+                                <div>Total Messages</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">${data.stats.new_messages}</div>
+                                <div>New Messages</div>
+                            </div>
+                        `;
+                        document.getElementById('statsGrid').innerHTML = statsHtml;
+                    }
+                })
+                .catch(error => console.error('Error loading stats:', error));
+        }
+
+        // Load bookings
+        function loadBookings() {
+            fetch('admin-api.php?action=bookings')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        let html = `
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Pickup</th>
+                                        <th>Drop</th>
+                                        <th>Date</th>
+                                        <th>Vehicle</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+                        
+                        data.bookings.forEach(booking => {
+                            html += `
+                                <tr>
+                                    <td>${booking.id}</td>
+                                    <td>${booking.fullname}</td>
+                                    <td>${booking.email}</td>
+                                    <td>${booking.phone}</td>
+                                    <td>${booking.pickup_address}</td>
+                                    <td>${booking.drop_address}</td>
+                                    <td>${booking.pickup_date}</td>
+                                    <td>${booking.vehicle_type}</td>
+                                    <td><span class="status-badge status-${booking.booking_status}">${booking.booking_status}</span></td>
+                                    <td>
+                                        <button class="action-btn btn-update" onclick="updateBookingStatus(${booking.id})">Update</button>
+                                        <button class="action-btn btn-delete" onclick="deleteBooking(${booking.id})">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                        
+                        html += '</tbody></table>';
+                        document.getElementById('bookingsTable').innerHTML = html;
+                    }
+                })
+                .catch(error => console.error('Error loading bookings:', error));
+        }
+
+        // Load messages
+        function loadMessages() {
+            fetch('admin-api.php?action=messages')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        let html = `
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Subject</th>
+                                        <th>Message</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+                        
+                        data.messages.forEach(message => {
+                            html += `
+                                <tr>
+                                    <td>${message.id}</td>
+                                    <td>${message.name}</td>
+                                    <td>${message.email}</td>
+                                    <td>${message.subject}</td>
+                                    <td>${message.message.substring(0, 100)}...</td>
+                                    <td><span class="status-badge status-${message.status}">${message.status}</span></td>
+                                    <td>${message.created_at}</td>
+                                    <td>
+                                        <button class="action-btn btn-view" onclick="viewMessage(${message.id})">View</button>
+                                        <button class="action-btn btn-update" onclick="updateMessageStatus(${message.id})">Update</button>
+                                        <button class="action-btn btn-delete" onclick="deleteMessage(${message.id})">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                        
+                        html += '</tbody></table>';
+                        document.getElementById('messagesTable').innerHTML = html;
+                    }
+                })
+                .catch(error => console.error('Error loading messages:', error));
+        }
+
+        // Search function
+        function searchTable(tableId, searchTerm) {
+            const table = document.getElementById(tableId);
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Action functions
+        function updateBookingStatus(id) {
+            const newStatus = prompt('Enter new status (pending, confirmed, in_progress, completed, cancelled):');
+            if (newStatus) {
+                fetch('admin-api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=update_booking_status&id=${id}&status=${newStatus}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Status updated successfully!');
+                        loadBookings();
+                        loadStats();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                });
+            }
+        }
+
+        function deleteBooking(id) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                fetch('admin-api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=delete_booking&id=${id}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Booking deleted successfully!');
+                        loadBookings();
+                        loadStats();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                });
+            }
+        }
+
+        function viewMessage(id) {
+            fetch(`admin-api.php?action=view_message&id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const message = data.message;
+                        alert(`From: ${message.name}\nEmail: ${message.email}\nSubject: ${message.subject}\n\nMessage:\n${message.message}`);
+                    }
+                });
+        }
+
+        function updateMessageStatus(id) {
+            const newStatus = prompt('Enter new status (new, read, replied):');
+            if (newStatus) {
+                fetch('admin-api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=update_message_status&id=${id}&status=${newStatus}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Status updated successfully!');
+                        loadMessages();
+                        loadStats();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                });
+            }
+        }
+
+        function deleteMessage(id) {
+            if (confirm('Are you sure you want to delete this message?')) {
+                fetch('admin-api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=delete_message&id=${id}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Message deleted successfully!');
+                        loadMessages();
+                        loadStats();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                });
+            }
+        }
+
+        // Auto-refresh data every 30 seconds
+        setInterval(() => {
+            loadStats();
+            loadBookings();
+            loadMessages();
+        }, 30000);
+    </script>
+</body>
+</html>
