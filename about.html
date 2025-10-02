@@ -1,0 +1,106 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devesh Logistics website design</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
+</head>
+<body>
+    <section class="sub-header">
+        <nav>
+            <a href="index.html"><img src="images/LOGO.png"></a>
+            <div class="nav-links" id="navLinks">  
+                <i class="fa fa-close" onclick="hideMenu()"></i>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="about.html">ABOUT</a></li>
+                    <li><a href="product.html">PRODUCT</a></li>
+                    <li><a href="blog.html">BLOG</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+        </nav>   
+            <h1><span>About Us</span> <br> REDEFINING TRUCKING<span> DIGITAL</span></h1>
+            
+    </section>
+    
+    
+<!------- about us content -------->
+    
+<section class="about-us">
+    <div class="row">
+        <div class="about-col">
+            <h1><span>DEVESH </span> LOGISTICS</h1>     
+            <p>At Devesh Logistics, we specialize in delivering reliable, efficient, and safe transportation solutions across India and beyond. With a fleet of world-class trucks and a dedicated team, we ensure your goods reach their destination on time, every time. Our commitment to excellence, advanced tracking systems, and customer-first approach have made us a trusted partner for businesses in diverse industries. Whether it’s local delivery or cross-border transport, Devesh Logistics is driven by trust, powered by technology, and committed to moving your world forward.</p>
+<a href="" class="hero-btn red-btn">EXPOLER NOW</a>
+        </div>
+        <div class="about-col">
+            <img src="images/About bg.jpg">
+        </div>
+    </div>    
+</section>
+
+
+<!----sevices-->
+  <div id="services">
+      <div class="container">
+        <h1 class="sub-title" style="text-align: center;"><span>ACCOLADES</span></h1>
+        <div class="services-list">
+            <div>
+                
+                <h2>FORTUNE</h2>
+                <p>4040<br>2023</p>
+                <a href="">Learn more</a>
+            </div>
+            <div>
+                
+                <h2>BUSINESS</h2>
+                <p>Tansformation <br>AWARD 2022<p>
+                <a href="">Learn more</a>
+
+            </div>
+            <div>
+            
+            <h2>ECONOMIC TIMES</h2>
+            <p>Company with great managers</p>
+            <a href="">Learn more</a>
+
+            </div>
+        </div>
+      </div>
+     </div>
+
+    
+<!-------- footer ---------->
+
+<section class="footer">
+    <img src="images/LOGO.png">
+        <h4><span>DEVESH LOGISTICS</span></h4>
+        <p>Devesh Logistics is committed to delivering excellence in transportation, warehousing, and supply chain solutions. With a focus on reliability, speed, and customer satisfaction, we ensure your goods reach their destination safely and on time.<br> Our dedicated team works tirelessly to provide seamless logistics services tailored to your needs, helping your business move forward with confidence.</p>
+        <div class="icons">
+            <i class="fa fa-facebook"></i>
+            <i class="fa fa-twitter"></i>
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-linkedin"></i>
+        </div>
+        <p>made with <i class="fa fa-heart-o"></i> by Devesh Logistics</p>
+</section>    
+  
+  
+<!----JavaScript for toggle menu---->
+<script>
+    var navLinks = document.getElementById("navLinks");
+
+    function showMenu() {
+        navLinks.style.right = "0";
+    }
+
+    function hideMenu() {
+        navLinks.style.right = "-200px";
+    }
+</script> 
+    
+</body>
+</html>    

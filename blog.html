@@ -1,0 +1,129 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devesh Logistics website design</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
+</head>
+<body>
+    <section class="sub-header">
+        <nav>
+            <a href="index.html"><img src="images/LOGO.png"></a>
+            <div class="nav-links" id="navLinks">  
+                <i class="fa fa-close" onclick="hideMenu()"></i>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="about.html">ABOUT</a></li>
+                    <li><a href="product.html">PRODUCT</a></li>
+                    <li><a href="blog.html">BLOG</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+        </nav>
+            <h1>Our Trucking Loads In World</h1>
+    </section>
+    
+<!---------- Blog Page Content ---------->
+    
+    <section class="blog-content">
+    <div class="row">
+    <div class="blog-left">
+        <img src="images/Truck1.jpg">
+        <h2>Our Trucking Management Network</h2>
+        
+        <p>Devesh Logistics operates an integrated trucking network that connects major industrial hubs,
+    regional distribution centers, and last-mile delivery points. Our fleet is monitored 24/7 with
+    GPS-enabled tracking and proactive route optimisation, ensuring shipments move faster with fewer delays.</p>
+        <br>
+        <p> We combine modern telematics with experienced drivers and local partner stations to maintain high
+    reliability across long-haul and short-distance routes. Real-time status updates and automated
+    notifications keep our customers informed at every step — from pickup to delivery.</p>
+        <br>
+        <p> Our network is designed for scalability and flexibility: whether you need single-truck loads,
+    bulk consignments, or scheduled routes, we tailor solutions to reduce transit time and control cost,
+    while maintaining strict safety and compliance standards.</p>
+        <br>
+        <p>At Devesh Logistics, we continuously invest in advanced technology and skilled professionals to enhance our trucking management network. Our integrated systems allow for real-time monitoring, optimized routing, and faster turnaround times, ensuring that every delivery meets the highest standards of efficiency. With a commitment to transparency and customer satisfaction, we aim to set new benchmarks in the logistics industry.</p>
+        
+        <div class="comment-box">
+            <h3>Leave a comment</h3>
+            <form class="comment-form">
+                    <input type="text" placeholder="Enter Name">
+                    <input type="email" placeholder="Enter email">
+                    <textarea rows="5" placeholder="Your Comment"></textarea>
+                    <button type="submit" class="hero-btn red-btn">POST COMMENT</button>
+            </form>
+        </div>
+    </div>
+        
+    <div class="blog-right">
+        
+        
+            <h3>Truck Category</h3>
+            <div>
+                <span>Business Analytics</span>
+                <span>21</span>
+            </div>
+            <div>
+                <span>Truck Loads</span>
+                <span>28</span>
+            </div>
+            <div>
+                <span>Truck Networking</span>
+                <span>15</span>
+            </div>
+            <div>
+                <span>Truck GPS</span>
+                <span>34</span>
+            </div>
+            <div>
+                <span>Fuel Card</span>
+                <span>42</span>
+            </div>
+            <div>
+                <span>FasTag</span>
+                <span>22</span>
+            </div>
+            <div>
+                <span>Awards</span>
+                <span>13</span>
+            </div>
+           
+        </div> 
+    
+    </div>
+    </section>
+    
+<!-------- footer ---------->
+
+<section class="footer">
+    <img src="images/LOGO.png">
+        <h4><span> DEVESH LOGISTICS</span></h4>
+       <p>Devesh Logistics is committed to delivering excellence in transportation, warehousing, and supply chain solutions. With a focus on reliability, speed, and customer satisfaction, we ensure your goods reach their destination safely and on time.<br> Our dedicated team works tirelessly to provide seamless logistics services tailored to your needs, helping your business move forward with confidence.</p>
+        <div class="icons">
+            <i class="fa fa-facebook"></i>
+            <i class="fa fa-twitter"></i>
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-linkedin"></i>
+        </div>
+        <p>made with <i class="fa fa-heart-o"></i> by Devesh Logistics</p>
+</section>    
+  
+  
+<!----JavaScript for toggle menu---->
+<script>
+    var navLinks = document.getElementById("navLinks");
+
+    function showMenu() {
+        navLinks.style.right = "0";
+    }
+
+    function hideMenu() {
+        navLinks.style.right = "-200px";
+    }
+</script> 
+    
+</body>
+</html>    
