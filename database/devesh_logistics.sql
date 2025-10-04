@@ -1,8 +1,6 @@
 -- Database setup for Devesh Logistics
--- Create database
 CREATE DATABASE IF NOT EXISTS devesh_logistics;
 USE devesh_logistics;
-
 -- Table for booking details
 CREATE TABLE IF NOT EXISTS bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
